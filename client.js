@@ -31,3 +31,10 @@ client.readTodos({}, (err, response) => {
   console.log('Received from server', JSON.stringify(response));
   response.items.forEach((i) => console.log(i.id, i.text));
 });
+
+const call = client.readTodoStream();
+call.on('data', (item) => {
+  console.log('Received item from server stream:', JSON.stringify(item));
+});
+
+call.on('end', (item) => console.log('server done!'));

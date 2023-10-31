@@ -17,6 +17,7 @@ const todoPackage = grpcObject.todoPackage;
   server.addService(todoPackage.Todo.service, {
     createTodo: createTodo,
     readTodos: readTodos,
+    readTodoStream: readTodoStream,
   });
 
   const todos = [];
@@ -31,5 +32,9 @@ const todoPackage = grpcObject.todoPackage;
   }
   function readTodos(call, callback) {
     callback(null, { items: todos });
+  }
+  function readTodoStream(call, callback) {
+    todos.forEach((t) => call.write(t));
+    call.end();
   }
 })();
